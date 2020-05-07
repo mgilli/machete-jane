@@ -11,18 +11,20 @@ class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.layer = PLAYER_LAYER
         self.groups = game.all_sprites
-        pg.sprite.Sprite.__init__(self)
+        pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.player_img
         self.image = resize_to_multiplier(self.image)
         self.rect = self.image.get_rect()
+        self.image_right = self.image
+        self.image_left = pg.transform.flip(self.image, True, False)
         self.pos = vec(x,y)
         self.rect.center = self.pos
         self.vel = vec(0,0)
         self.acc = vec(0,0)
 
     def get_keys(self):
-        self.acc = vec(0,0) # WILL NEED TO CHANGE TO ADD GRAVITY
+        self.acc = vec(0,GRAVITY)
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.acc.x = - PLAYER_ACC
@@ -45,5 +47,17 @@ class Player(pg.sprite.Sprite):
         #update position, v+1/2Gamma (not squared?)
         self.pos += self.vel + 0.5 * self.acc
 
+        #flips image based on velocity
+        if self.vel.x > 0:
+            self.image = self.image_right
+        if self.vel.x < 0:
+            self.image = self.image_left
+
         #applies change in position to rect
         self.rect.midbottom = self.pos
+
+class Wall(pg.sprite.Sprite):
+    def __init__(self, game, x, y, w, h):
+        self.groups = game.all_sprites, game.walls
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game

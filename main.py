@@ -50,8 +50,8 @@ class Game:
     def new(self):
         # start a new game
         self.all_sprites = pg.sprite.Group()
+        self.walls = pg.sprite.Group()
         self.player = Player(self,200,200)
-        self.all_sprites.add(self.player)
         self.run()
 
     def run(self):
