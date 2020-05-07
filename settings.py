@@ -1,10 +1,11 @@
 # game options/settings
 TITLE = "Machete Jane"
 
+#resize the sprite images during import
 SIZE_MULTIPLIER = 4
 
-WIDTH = 256 * SIZE_MULTIPLIER
-HEIGHT = 144 * SIZE_MULTIPLIER
+WIDTH = 1024
+HEIGHT = 576
 FPS = 60
 
 # define colors
@@ -19,9 +20,19 @@ BROWN = (106, 55, 5)
 CYAN = (0, 255, 255)
 
 
+# World settings
+
+GRAVITY = 0.8
+
 # Layers
 WALL_LAYER = 1
 PLAYER_LAYER = 2
 BULLET_LAYER = 3
 MOB_LAYER = 2
 EFFECTS_LAYER = 1
+
+# Player settings
+
+PLAYER_IMG = 'jane.png'
+PLAYER_ACC = 0.7
+PLAYER_FRICTION = -0.12
