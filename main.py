@@ -51,7 +51,10 @@ class Game:
         # start a new game
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
-        self.player = Player(self,200,200)
+        self.player = Player(self,300,200)
+        self.wall = Obstacle(self, 150,350, 380,20)
+        self.wall2 = Obstacle(self, 120,100, 20,520)
+        self.wall3 = Obstacle(self, 550,100, 20,520)
         self.run()
 
     def run(self):
@@ -81,6 +84,7 @@ class Game:
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
         # *after* drawing everything, flip the display
+        pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         pg.display.flip()
 
     def show_start_screen(self):
