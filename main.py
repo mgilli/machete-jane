@@ -55,6 +55,7 @@ class Game:
         self.wall = Obstacle(self, 150,350, 380,20)
         self.wall2 = Obstacle(self, 120,100, 20,520)
         self.wall3 = Obstacle(self, 550,100, 20,520)
+        self.wall4 = Obstacle(self, 350,150, 30,20)
         self.run()
 
     def run(self):
@@ -78,6 +79,13 @@ class Game:
                 if self.playing:
                     self.playing = False
                 self.running = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    self.player.jump()
+            if event.type == pg.KEYUP:
+                if event.key == pg.K_SPACE:
+                    self.player.jump_cut()
+
 
     def draw(self):
         # Game Loop - draw

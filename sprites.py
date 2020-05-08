@@ -26,6 +26,7 @@ def collide_with_walls(sprite, group, dir):
         if hits:
             if hits[0].rect.centery > sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.top - 0
+                sprite.jumping = False
             if hits[0].rect.centery < sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height
             sprite.vel.y = 0
@@ -49,6 +50,22 @@ class Player(pg.sprite.Sprite):
         self.hit_rect.midbottom = self.pos
         self.vel = vec(0,0)
         self.acc = vec(0,0)
+        self.jumping = False
+
+    def jump_cut(self):
+        if self.jumping:
+            if self.vel.y < -3:
+                self.vel.y = -3
+
+
+
+    def jump(self):
+        self.hit_rect.bottom += 1
+        hits = pg.sprite.spritecollide(self, self.game.walls, False,  collide_hit_rect)
+        self.hit_rect.bottom -= 1
+        if hits and not self.jumping:
+            self.jumping = True
+            self.vel.y -= PLAYER_JUMP
 
     def get_keys(self):
         self.acc = vec(0,GRAVITY)
@@ -57,6 +74,7 @@ class Player(pg.sprite.Sprite):
             self.acc.x = - PLAYER_ACC
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
             self.acc.x =  PLAYER_ACC
+
 
     def update(self):
         self.get_keys()
