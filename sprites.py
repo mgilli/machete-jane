@@ -118,3 +118,12 @@ class Obstacle(pg.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+
+class Spike(pg.sprite.Sprite):
+    def __init__(self, game, x, y, w, h):
+        self.groups =  game.spikes
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.image = pg.Surface((w,h))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)

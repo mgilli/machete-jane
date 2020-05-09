@@ -54,6 +54,7 @@ class Game:
         # start a new game
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.spikes = pg.sprite.Group()
         self.player = Player(self,300,200)
         #creates map image and resize to tile multiplier
         self.map = TiledMap(path.join(self.map_folder, 'level1.tmx'))
@@ -67,7 +68,10 @@ class Game:
             if tile_object.name == 'wall':
                 Obstacle(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
-        #
+            if tile_object.name == 'spike':
+                Spike(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
+                         tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
+
 
         self.run()
 
@@ -83,6 +87,11 @@ class Game:
     def update(self):
         # Game Loop - Update
         self.all_sprites.update()
+
+        #player hits spikes:
+        hits = pg.sprite.spritecollide(self.player, self.spikes, False)
+        for hit in hits:
+            self.playing = False
 
     def events(self):
         # Game Loop - events
@@ -111,6 +120,8 @@ class Game:
         self.all_sprites.draw(self.screen)
         if self.toggle_hitbox:
             pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
+            self.walls.draw(self.screen)
+            self.spikes.draw(self.screen)
         # *after* drawing everything, flip the display
         pg.display.flip()
 
