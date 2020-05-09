@@ -2,7 +2,8 @@
 TITLE = "Machete Jane"
 
 #resize the sprite images during import
-SIZE_MULTIPLIER = 4
+CHARACTER_SIZE_MULTIPLIER = 4
+TILE_SIZE_MULTIPLIER = 4
 
 WIDTH = 1024
 HEIGHT = 576

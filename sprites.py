@@ -3,8 +3,8 @@ import pygame as pg
 from settings import *
 vec = pg.math.Vector2
 
-def resize_to_multiplier(image):
-    resized_img = pg.transform.scale(image, (image.get_width() * SIZE_MULTIPLIER, image.get_height() * SIZE_MULTIPLIER))
+def resize_to_multiplier(image, mult):
+    resized_img = pg.transform.scale(image, (image.get_width() * mult , image.get_height() * mult))
     return resized_img
 
 def collide_hit_rect(one, two):
@@ -40,9 +40,9 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.player_img
-        self.image = resize_to_multiplier(self.image)
+        self.image = resize_to_multiplier(self.image, CHARACTER_SIZE_MULTIPLIER)
         self.rect = self.image.get_rect()
-        self.hit_rect = pg.Rect(0,0,(self.rect.width / 2), (self.rect.height / 2))
+        self.hit_rect = pg.Rect(0,0,(self.rect.width * 0.25), (self.rect.height * 0.75))
         self.image_right = self.image
         self.image_left = pg.transform.flip(self.image, True, False)
         self.pos = vec(x,y)
@@ -112,7 +112,7 @@ class Player(pg.sprite.Sprite):
 
 class Obstacle(pg.sprite.Sprite):
     def __init__(self, game, x, y, w, h):
-        self.groups = game.all_sprites, game.walls
+        self.groups =  game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.image = pg.Surface((w,h))
         self.image.fill(GREEN)
