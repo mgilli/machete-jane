@@ -1,3 +1,6 @@
+import pygame as pg
+vec = pg.math.Vector2
+
 # game options/settings
 TITLE = "Machete Jane"
 
@@ -8,6 +11,7 @@ TILE_SIZE_MULTIPLIER = 4
 WIDTH = 1024
 HEIGHT = 576
 FPS = 60
+
 
 # define colors
 WHITE = (255, 255, 255)
@@ -38,3 +42,17 @@ PLAYER_IMG = 'jane.png'
 PLAYER_ACC = 0.7
 PLAYER_FRICTION = -0.12
 PLAYER_JUMP = 20
+
+# Gun settings
+
+BULLET_IMG = 'bullet.png'
+BULLET_SPEED = 20
+BULLET_LIFETIME = 2000
+MUZZLE_OFFSET = vec(12 * CHARACTER_SIZE_MULTIPLIER, -11 * CHARACTER_SIZE_MULTIPLIER)
+GUN_RATE = 350
+
+# Mob settings
+
+MOB_IMG = 'mummy.png'
+MOB_ACC = 0.5
+MOB_FRICTION = -0.12

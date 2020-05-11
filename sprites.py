@@ -21,6 +21,8 @@ def collide_with_walls(sprite, group, dir):
             sprite.vel.x = 0
             sprite.acc.x = 0
             sprite.hit_rect.centerx = sprite.pos.x
+            if sprite.__class__.__name__ == 'Mob':
+                sprite.direction *= -1
     if dir == 'y':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:
@@ -35,7 +37,7 @@ def collide_with_walls(sprite, group, dir):
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.layer = PLAYER_LAYER
+        self._layer = PLAYER_LAYER
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -51,6 +53,8 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.jumping = False
+        self.gun_dir = 'right'
+        self.last_shot = 0
 
     def jump_cut(self):
         if self.jumping:
@@ -67,13 +71,25 @@ class Player(pg.sprite.Sprite):
             self.jumping = True
             self.vel.y -= PLAYER_JUMP
 
+    def shoot(self):
+        now = pg.time.get_ticks()
+        if now - self.last_shot > GUN_RATE:
+            self.last_shot = now
+            Bullet(self.game, self.pos, self.gun_dir)
+
     def get_keys(self):
         self.acc = vec(0,GRAVITY)
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.acc.x = - PLAYER_ACC
+            self.image = self.image_left
+            self.gun_dir = 'left'
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
             self.acc.x =  PLAYER_ACC
+            self.image = self.image_right
+            self.gun_dir = 'right'
+        if keys[pg.K_LCTRL]:
+            self.shoot()
 
 
     def update(self):
@@ -104,10 +120,10 @@ class Player(pg.sprite.Sprite):
 
 
         #flips image based on velocity
-        if self.vel.x > 0:
-            self.image = self.image_right
-        if self.vel.x < 0:
-            self.image = self.image_left
+        # if self.vel.x > 0:
+        #     self.image = self.image_right
+        # if self.vel.x < 0:
+        #     self.image = self.image_left
 
 
 class Obstacle(pg.sprite.Sprite):
@@ -127,3 +143,83 @@ class Spike(pg.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+
+class Mob(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self._layer = MOB_LAYER
+        self.groups = game.mobs, game.all_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.mob_img
+        self.image = resize_to_multiplier(self.image, CHARACTER_SIZE_MULTIPLIER)
+        self.rect = self.image.get_rect()
+        self.hit_rect = pg.Rect(0,0,(self.rect.width * 0.25), (self.rect.height * 0.75))
+        self.image_left = self.image
+        self.image_right = pg.transform.flip(self.image, True, False)
+        self.pos = vec(x,y)
+        self.rect.midbottom = self.pos
+        self.hit_rect.midbottom = self.pos
+        self.vel = vec(0,0)
+        self.acc = vec(0,0)
+        self.direction = -1
+
+    def update(self):
+        self.acc = vec(0,GRAVITY)
+
+        self.acc.x += MOB_ACC * self.direction
+
+        self.acc.x += self.vel.x * PLAYER_FRICTION
+
+        #laws of motion, acceleration is added to velocity.
+        #In the x axis ,if the button is not pressed, not change in velocity (except friction)
+        self.vel += self.acc
+
+        #makes player stop in case of very low speed (x)
+        if abs(self.vel.x) < 0.1:
+            self.vel.x = 0
+
+        #update position, v+1/2Gamma (not squared?) and collisions
+        self.pos.y += self.vel.y + 0.5 * self.acc.y
+        self.hit_rect.bottom = self.pos.y
+        collide_with_walls(self, self.game.walls, 'y')
+        self.rect.bottom = self.hit_rect.bottom
+
+        self.pos.x += self.vel.x + 0.5 * self.acc.x
+        self.hit_rect.centerx = self.pos.x
+        collide_with_walls(self, self.game.walls, 'x')
+        self.rect.centerx = self.hit_rect.centerx
+
+        #flips image based on velocity
+        if self.vel.x > 0:
+            self.image = self.image_right
+        if self.vel.x < 0:
+            self.image = self.image_left
+
+
+
+class Bullet(pg.sprite.Sprite):
+    def __init__(self, game, pos, direction):
+        self._layer = BULLET_LAYER
+        self.groups = game.bullets, game.all_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.bullet_img
+        self.image = resize_to_multiplier(self.image, CHARACTER_SIZE_MULTIPLIER)
+        self.vel = BULLET_SPEED
+        if direction == 'left':
+            self.image = pg.transform.flip(self.image, True, False)
+            self.vel = -BULLET_SPEED
+        self.rect = self.image.get_rect()
+        self.pos = vec(pos)
+        self.pos.y = self.pos.y + MUZZLE_OFFSET.y
+        self.pos.x = self.pos.x + (self.vel/BULLET_SPEED) * MUZZLE_OFFSET.x
+        self.rect.center = self.pos
+        self.spawn_time = pg.time.get_ticks()
+
+    def update(self):
+        self.pos.x += self.vel
+        self.rect.center = self.pos
+        if pg.sprite.spritecollideany(self, self.game.walls):
+            self.kill()
+        if pg.time.get_ticks() - self.spawn_time > BULLET_LIFETIME:
+            self.kill()
