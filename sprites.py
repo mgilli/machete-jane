@@ -10,6 +10,9 @@ def resize_to_multiplier(image, mult):
 def collide_hit_rect(one, two):
     return one.hit_rect.colliderect(two.rect)
 
+def collide_hit_rect_mob(one, two):
+    return one.hit_rect.colliderect(two.hit_rect)
+
 def collide_with_walls(sprite, group, dir):
     if dir == 'x':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
@@ -116,16 +119,6 @@ class Player(pg.sprite.Sprite):
         collide_with_walls(self, self.game.walls, 'x')
         self.rect.centerx = self.hit_rect.centerx
 
-
-
-
-        #flips image based on velocity
-        # if self.vel.x > 0:
-        #     self.image = self.image_right
-        # if self.vel.x < 0:
-        #     self.image = self.image_left
-
-
 class Obstacle(pg.sprite.Sprite):
     def __init__(self, game, x, y, w, h):
         self.groups =  game.walls
@@ -195,8 +188,6 @@ class Mob(pg.sprite.Sprite):
         if self.vel.x < 0:
             self.image = self.image_left
 
-
-
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, direction):
         self._layer = BULLET_LAYER
@@ -223,3 +214,18 @@ class Bullet(pg.sprite.Sprite):
             self.kill()
         if pg.time.get_ticks() - self.spawn_time > BULLET_LIFETIME:
             self.kill()
+
+class Teleport(pg.sprite.Sprite):
+    def __init__(self, game, x, y, w, h, dest):
+        self._layer = EFFECT_LAYER
+        self.groups = game.all_sprites, game.teleports
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((w,h))
+        self.image.fill(RED)
+        self.rect = pg.Rect(x, y, w, h)
+        self.x = x
+        self.y = y
+        self.rect.x = x
+        self.rect.y = y
+        self.destination = dest

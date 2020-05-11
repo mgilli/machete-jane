@@ -47,6 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
+        self.current_level = 'level1.tmx'
         game_folder = path.dirname(__file__)
         img_folder =  path.join(game_folder, 'img')
         self.map_folder = path.join(game_folder, 'maps')
@@ -63,9 +64,10 @@ class Game:
         self.spikes = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
+        self.teleports = pg.sprite.Group()
 
         #creates map image and resize to tile multiplier
-        self.map = TiledMap(path.join(self.map_folder, 'level1.tmx'))
+        self.map = TiledMap(path.join(self.map_folder, self.current_level))
         self.map_img = self.map.make_map()
         self.map_img = resize_to_multiplier(self.map_img, TILE_SIZE_MULTIPLIER)
         self.map.rect = self.map_img.get_rect()
@@ -85,6 +87,10 @@ class Game:
             if tile_object.name == 'mob':
                 Mob(self, tile_object.x * TILE_SIZE_MULTIPLIER,
                     (tile_object.y + tile_object.height) * TILE_SIZE_MULTIPLIER)
+            if tile_object.name == 'teleport':
+                dest = tile_object.properties['destination']
+                Teleport(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
+                         tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER, dest)
 
 
         self.run()
@@ -97,7 +103,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
-            #print(self.state)
+
 
     def update(self):
 
@@ -112,7 +118,7 @@ class Game:
             self.playing = False
 
         #player hits mobs:
-        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
+        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect_mob)
         for hit in hits:
             self.state = State.GAME_OVER
             self.playing = False
@@ -123,6 +129,12 @@ class Game:
             for bullet in hits[mob]:
                 mob.kill()
 
+        # player hits teleports
+        hits = pg.sprite.spritecollide(self.player, self.teleports, False)
+        for hit in hits:
+            self.current_level = hit.destination
+            self.state = State.CHANGE_LEVEL
+            self.playing = False
 
     def events(self):
 
@@ -172,6 +184,16 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
 
+    def show_next_level_screen(self):
+        # game over/continue
+        self.screen.fill(BLACK)
+        self.draw_text("NEXT LEVEL", self.title_font, 50, WHITE,
+                       WIDTH / 2, HEIGHT / 2, align="center")
+        self.draw_text("Press a key to continue", self.title_font, 25, WHITE,
+                       WIDTH / 2, HEIGHT * 3 / 4, align="center")
+        pg.display.flip()
+        self.wait_for_key()
+
     def show_start_screen(self):
         # game over/continue
         self.screen.fill(BLACK)
@@ -212,6 +234,9 @@ g.show_start_screen()
 while g.running:
     g.new()
     g.run()
-    g.show_go_screen()
+    if g.state == State.CHANGE_LEVEL:
+        g.show_next_level_screen()
+    elif g.state == State.GAME_OVER:
+        g.show_go_screen()
 
 pg.quit()
