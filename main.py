@@ -50,11 +50,22 @@ class Game:
         self.current_level = 'level1.tmx'
         game_folder = path.dirname(__file__)
         img_folder =  path.join(game_folder, 'img')
+        music_folder = path.join(game_folder, 'music')
+        snd_folder = path.join(game_folder, 'snd')
         self.map_folder = path.join(game_folder, 'maps')
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.mob_img = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.title_font = path.join(img_folder, 'press_start.ttf')
+
+
+
+        # Sound loading
+        pg.mixer.music.load(path.join(music_folder, BG_MUSIC))
+        self.shoot_snd = pg.mixer.Sound(path.join(snd_folder, SHOOT_SND))
+        self.jump_snd = pg.mixer.Sound(path.join(snd_folder, JUMP_SND))
+        self.hit_snd = pg.mixer.Sound(path.join(snd_folder, HIT_SND))
+        self.lose_snd = pg.mixer.Sound(path.join(snd_folder, LOSE_SND))
 
     def new(self):
         # start a new game
@@ -114,12 +125,16 @@ class Game:
         #player hits spikes:
         hits = pg.sprite.spritecollide(self.player, self.spikes, False)
         for hit in hits:
+            self.lose_snd.play()
+            #self.hit_snd.play()
             self.state = State.GAME_OVER
             self.playing = False
 
         #player hits mobs:
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect_mob)
         for hit in hits:
+            self.hit_snd.play()
+            self.lose_snd.play()
             self.state = State.GAME_OVER
             self.playing = False
 
@@ -127,6 +142,7 @@ class Game:
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for mob in hits:
             for bullet in hits[mob]:
+                self.hit_snd.play()
                 mob.kill()
 
         # player hits teleports
@@ -185,7 +201,7 @@ class Game:
         self.wait_for_key()
 
     def show_next_level_screen(self):
-        # game over/continue
+
         self.screen.fill(BLACK)
         self.draw_text("NEXT LEVEL", self.title_font, 50, WHITE,
                        WIDTH / 2, HEIGHT / 2, align="center")
@@ -195,7 +211,7 @@ class Game:
         self.wait_for_key()
 
     def show_start_screen(self):
-        # game over/continue
+        pg.mixer.music.play(loops=-1)
         self.screen.fill(BLACK)
         self.draw_text("MACHETE JANE", self.title_font, 50, RED,
                        WIDTH / 2, HEIGHT / 2, align="center")

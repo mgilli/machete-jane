@@ -73,12 +73,14 @@ class Player(pg.sprite.Sprite):
         if hits and not self.jumping:
             self.jumping = True
             self.vel.y -= PLAYER_JUMP
+            self.game.jump_snd.play()
 
     def shoot(self):
         now = pg.time.get_ticks()
         if now - self.last_shot > GUN_RATE:
             self.last_shot = now
             Bullet(self.game, self.pos, self.gun_dir)
+            self.game.shoot_snd.play()
 
     def get_keys(self):
         self.acc = vec(0,GRAVITY)
@@ -218,7 +220,7 @@ class Bullet(pg.sprite.Sprite):
 class Teleport(pg.sprite.Sprite):
     def __init__(self, game, x, y, w, h, dest):
         self._layer = EFFECT_LAYER
-        self.groups = game.all_sprites, game.teleports
+        self.groups = game.teleports
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((w,h))

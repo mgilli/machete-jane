@@ -57,3 +57,12 @@ GUN_RATE = 350
 MOB_IMG = 'mummy.png'
 MOB_ACC = 0.5
 MOB_FRICTION = -0.12
+
+# Sound settings
+
+BG_MUSIC = 'MJmusic1.ogg'
+
+SHOOT_SND = 'shoot.wav'
+JUMP_SND = 'jump.wav'
+LOSE_SND = 'lose2.wav'
+HIT_SND = 'hit.wav'
