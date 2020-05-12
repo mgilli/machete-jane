@@ -1,6 +1,7 @@
 # Sprite classes for platform game
 import pygame as pg
 from settings import *
+from random import choice, randint
 vec = pg.math.Vector2
 
 def flip_images(list):
@@ -280,6 +281,7 @@ class Bullet(pg.sprite.Sprite):
         self.pos.x = self.pos.x + (self.vel/BULLET_SPEED) * MUZZLE_OFFSET.x
         self.rect.center = self.pos
         self.spawn_time = pg.time.get_ticks()
+        MuzzleFlash(self.game, self.pos, direction)
 
     def update(self):
         self.pos.x += self.vel
@@ -303,3 +305,57 @@ class Teleport(pg.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.destination = dest
+
+class MuzzleFlash(pg.sprite.Sprite):
+    def __init__(self, game, pos, direction):
+        self._layer = EFFECTS_LAYER
+        self.groups =  game.all_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.pos = pos
+        size = randint(3,6)
+        self.image = resize_to_multiplier(self.game.flash_img, size)
+        self.rect = self.image.get_rect()
+        if direction == 'left':
+            self.image = pg.transform.flip(self.image, True, False)
+            self.rect.midright = self.pos
+        else:
+            self.rect.midleft = self.pos
+        self.spawn_time = pg.time.get_ticks()
+
+    def update(self):
+        if pg.time.get_ticks() - self.spawn_time > 50:
+            self.kill()
+
+class BloodSplatter(pg.sprite.Sprite):
+    def __init__(self, game, pos):
+        self._layer = EFFECTS_LAYER
+        self.groups =  game.all_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.pos = pos
+        self.image = pg.transform.flip(choice(self.game.bloods_imgs),
+                                       choice([True, False]), choice([True, False]))
+
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos
+        self.spawn_time = pg.time.get_ticks()
+        #self.current_size = 1
+        #self.last_update = pg.time.get_ticks()
+
+    def update(self):
+        if pg.time.get_ticks() - self.spawn_time > 32:
+            self.kill()
+        # Failed attempt to animate blood, small pixles don't look good
+        # now = pg.time.get_ticks()
+        # if now - self.last_update > 25:
+        #     center = self.rect.center
+        #     self.last_update = now
+        #     self.image = pg.transform.scale(self.image, (self.image.get_width() * self.current_size,
+        #                                     self.image.get_height() * self.current_size))
+        #     self.current_size += 1
+        #     self.rect = self.image.get_rect()
+        #     self.rect.center = center
+        #
+        # if self.current_size == 4:
+        #     self.kill()

@@ -47,7 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
-        self.current_level = 'level1.tmx'
+        self.current_level = 'level3.tmx'
         game_folder = path.dirname(__file__)
         self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')
@@ -58,11 +58,12 @@ class Game:
         self.player_idle_imgs = []
         self.player_walk_imgs = []
         self.mob_walk_imgs = []
-        self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS)
-        self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS)
-        self.mob_walk_imgs = self.make_anim_list(MOB_WALK_IMGS)
+        self.bloods_imgs = []
+        self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS, True)
+        self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS, True)
+        self.mob_walk_imgs = self.make_anim_list(MOB_WALK_IMGS, True)
+        self.bloods_imgs = self.make_anim_list(BLOOD_IMGS, True)
         self.bullet_img = pg.image.load(path.join(self.img_folder, BULLET_IMG)).convert_alpha()
-        self.blood_img = pg.image.load(path.join(self.img_folder, BLOOD_IMG)).convert_alpha()
         self.flash_img = pg.image.load(path.join(self.img_folder, FLASH_IMG)).convert_alpha()
         self.title_font = path.join(self.img_folder, 'press_start.ttf')
 
@@ -75,11 +76,12 @@ class Game:
         self.hit_snd = pg.mixer.Sound(path.join(snd_folder, HIT_SND))
         self.lose_snd = pg.mixer.Sound(path.join(snd_folder, LOSE_SND))
 
-    def make_anim_list(self, list):
+    def make_anim_list(self, list, resize):
         images_list = []
         for frame in list:
             frame = pg.image.load(path.join(self.img_folder, frame))
-            frame = resize_to_multiplier(frame, CHARACTER_SIZE_MULTIPLIER)
+            if resize:
+                frame = resize_to_multiplier(frame, CHARACTER_SIZE_MULTIPLIER)
             images_list.append(frame.convert_alpha())
         return images_list
 
@@ -159,9 +161,10 @@ class Game:
         for mob in hits:
             for bullet in hits[mob]:
                 self.hit_snd.play()
+                BloodSplatter(self, hits[mob][0].pos)
                 mob.kill()
 
-        # player hits teleports
+        # player hits teleportsd
         hits = pg.sprite.spritecollide(self.player, self.teleports, False)
         for hit in hits:
             self.current_level = hit.destination

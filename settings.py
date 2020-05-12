@@ -54,7 +54,7 @@ PLAYER_ANIM_SPEED = 180
 BULLET_IMG = 'bullet.png'
 BULLET_SPEED = 20
 BULLET_LIFETIME = 2000
-MUZZLE_OFFSET = vec(12 * CHARACTER_SIZE_MULTIPLIER, -11 * CHARACTER_SIZE_MULTIPLIER)
+MUZZLE_OFFSET = vec(12 * CHARACTER_SIZE_MULTIPLIER, -10 * CHARACTER_SIZE_MULTIPLIER)
 GUN_RATE = 350
 
 # Mob settings
@@ -77,5 +77,5 @@ HIT_SND = 'hit.wav'
 
 #effects settings
 
-BLOOD_IMG = 'blood.png'
+BLOOD_IMGS = ['blood1.png','blood2.png','blood3.png','blood4.png']
 FLASH_IMG = 'flash.png'
