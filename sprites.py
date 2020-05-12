@@ -3,6 +3,12 @@ import pygame as pg
 from settings import *
 vec = pg.math.Vector2
 
+def flip_images(list):
+    flipped_imgs = []
+    for frame in list:
+        flipped_imgs.append(pg.transform.flip(frame, True, False))
+    return flipped_imgs
+
 def resize_to_multiplier(image, mult):
     resized_img = pg.transform.scale(image, (image.get_width() * mult , image.get_height() * mult))
     return resized_img
@@ -50,14 +56,25 @@ class Player(pg.sprite.Sprite):
         self.hit_rect = pg.Rect(0,0,(self.rect.width * 0.25), (self.rect.height * 0.75))
         self.image_right = self.image
         self.image_left = pg.transform.flip(self.image, True, False)
+        self.load_images()
         self.pos = vec(x,y)
         self.rect.midbottom = self.pos
         self.hit_rect.midbottom = self.pos
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.jumping = False
+        self.walking = False
         self.gun_dir = 'right'
         self.last_shot = 0
+        self.last_update = 0
+        self.current_frame = 0
+
+    def load_images(self):
+        self.idle_frames_r = self.game.player_idle_imgs
+        self.walk_frames_r = self.game.player_walk_imgs
+
+        self.idle_frames_l = flip_images(self.idle_frames_r)
+        self.walk_frames_l = flip_images(self.walk_frames_r)
 
     def jump_cut(self):
         if self.jumping:
@@ -87,18 +104,50 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.acc.x = - PLAYER_ACC
-            self.image = self.image_left
+            #self.image = self.image_left
             self.gun_dir = 'left'
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
             self.acc.x =  PLAYER_ACC
-            self.image = self.image_right
+            #self.image = self.image_right
             self.gun_dir = 'right'
         if keys[pg.K_LCTRL]:
             self.shoot()
 
+    def animate(self):
+        now = pg.time.get_ticks()
+        if abs(self.vel.x) >= 1:
+            self.walking = True
+        else:
+            self.walking = False
+        # walk animation:
+        if self.walking:
+            if now - self.last_update > PLAYER_ANIM_SPEED:
+                self.last_update = now
+                self.current_frame = (self.current_frame +1) % len(self.walk_frames_r)
+                bottom = self.rect.bottom
+                if self.gun_dir == 'right':
+                    self.image = self.walk_frames_r[self.current_frame]
+                else:
+                    self.image = self.walk_frames_l[self.current_frame]
+                self.rect = self.image.get_rect()
+                self.rect.bottom = bottom
+        if not self.walking:
+            if now - self.last_update > PLAYER_ANIM_SPEED:
+                self.last_update = now
+                self.current_frame = (self.current_frame +1) % len(self.idle_frames_r)
+                bottom = self.rect.bottom
+                if self.gun_dir == 'right':
+                    self.image = self.idle_frames_r[self.current_frame]
+                else:
+                    self.image = self.idle_frames_l[self.current_frame]
+                    self.rect = self.image.get_rect()
+                    self.rect.bottom = bottom
+
+
 
     def update(self):
         self.get_keys()
+        self.animate()
         #apply friction
         self.acc.x += self.vel.x * PLAYER_FRICTION
 

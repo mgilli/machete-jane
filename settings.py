@@ -44,6 +44,11 @@ PLAYER_ACC = 0.7
 PLAYER_FRICTION = -0.12
 PLAYER_JUMP = 19
 
+PLAYER_IDLE_IMGS = ['jane-idle0.png', 'jane-idle1.png', 'jane-idle2.png', 'jane-idle3.png', 'jane-idle4.png']
+PLAYER_WALK_IMGS = ['jane-walking0.png','jane-walking1.png', 'jane-walking2.png', 'jane-walking3.png' ]
+
+PLAYER_ANIM_SPEED = 180
+
 # Gun settings
 
 BULLET_IMG = 'bullet.png'
@@ -66,3 +71,8 @@ SHOOT_SND = 'shoot.wav'
 JUMP_SND = 'jump.wav'
 LOSE_SND = 'lose2.wav'
 HIT_SND = 'hit.wav'
+
+#effects settings
+
+BLOOD_IMG = 'blood.png'
+FLASH_IMG = 'flash.png'

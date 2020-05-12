@@ -49,14 +49,20 @@ class Game:
     def load_data(self):
         self.current_level = 'level1.tmx'
         game_folder = path.dirname(__file__)
-        img_folder =  path.join(game_folder, 'img')
+        self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')
         snd_folder = path.join(game_folder, 'snd')
         self.map_folder = path.join(game_folder, 'maps')
-        self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
-        self.mob_img = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
-        self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
-        self.title_font = path.join(img_folder, 'press_start.ttf')
+        self.player_img = pg.image.load(path.join(self.img_folder, PLAYER_IMG)).convert_alpha()
+        self.mob_img = pg.image.load(path.join(self.img_folder, MOB_IMG)).convert_alpha()
+        self.player_idle_imgs = []
+        self.player_walk_imgs = []
+        self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS)
+        self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS)
+        self.bullet_img = pg.image.load(path.join(self.img_folder, BULLET_IMG)).convert_alpha()
+        self.blood_img = pg.image.load(path.join(self.img_folder, BLOOD_IMG)).convert_alpha()
+        self.flash_img = pg.image.load(path.join(self.img_folder, FLASH_IMG)).convert_alpha()
+        self.title_font = path.join(self.img_folder, 'press_start.ttf')
 
 
 
@@ -66,6 +72,14 @@ class Game:
         self.jump_snd = pg.mixer.Sound(path.join(snd_folder, JUMP_SND))
         self.hit_snd = pg.mixer.Sound(path.join(snd_folder, HIT_SND))
         self.lose_snd = pg.mixer.Sound(path.join(snd_folder, LOSE_SND))
+
+    def make_anim_list(self, list):
+        images_list = []
+        for frame in list:
+            frame = pg.image.load(path.join(self.img_folder, frame))
+            frame = resize_to_multiplier(frame, CHARACTER_SIZE_MULTIPLIER)
+            images_list.append(frame.convert_alpha())
+        return images_list
 
     def new(self):
         # start a new game
