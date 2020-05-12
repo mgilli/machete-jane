@@ -206,8 +206,31 @@ class Mob(pg.sprite.Sprite):
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.direction = -1
+        self.walk_frames_l = self.game.mob_walk_imgs
+        self.walk_frames_r = flip_images(self.walk_frames_l)
+
+        self.last_update = 0
+        self.current_frame = 0
+
+    def animate(self):
+        now = pg.time.get_ticks()
+
+        # walk animation:
+
+        if now - self.last_update > MOB_ANIM_SPEED:
+            self.last_update = now
+            self.current_frame = (self.current_frame +1) % len(self.walk_frames_r)
+            bottom = self.rect.bottom
+            if self.vel.x > 0:
+                self.image = self.walk_frames_r[self.current_frame]
+            else:
+                self.image = self.walk_frames_l[self.current_frame]
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+
 
     def update(self):
+        self.animate()
         self.acc = vec(0,GRAVITY)
 
         self.acc.x += MOB_ACC * self.direction
@@ -234,10 +257,10 @@ class Mob(pg.sprite.Sprite):
         self.rect.centerx = self.hit_rect.centerx
 
         #flips image based on velocity
-        if self.vel.x > 0:
-            self.image = self.image_right
-        if self.vel.x < 0:
-            self.image = self.image_left
+        # if self.vel.x > 0:
+        #     self.image = self.image_right
+        # if self.vel.x < 0:
+        #     self.image = self.image_left
 
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, direction):

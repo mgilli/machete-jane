@@ -63,6 +63,9 @@ MOB_IMG = 'mummy.png'
 MOB_ACC = 0.5
 MOB_FRICTION = -0.12
 
+MOB_WALK_IMGS = ['mummy_walk0.png', 'mummy_walk1.png','mummy_walk2.png','mummy_walk3.png' ]
+MOB_ANIM_SPEED = 270
+
 # Sound settings
 
 BG_MUSIC = 'MJmusic1.ogg'

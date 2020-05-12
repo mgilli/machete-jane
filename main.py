@@ -57,8 +57,10 @@ class Game:
         self.mob_img = pg.image.load(path.join(self.img_folder, MOB_IMG)).convert_alpha()
         self.player_idle_imgs = []
         self.player_walk_imgs = []
+        self.mob_walk_imgs = []
         self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS)
         self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS)
+        self.mob_walk_imgs = self.make_anim_list(MOB_WALK_IMGS)
         self.bullet_img = pg.image.load(path.join(self.img_folder, BULLET_IMG)).convert_alpha()
         self.blood_img = pg.image.load(path.join(self.img_folder, BLOOD_IMG)).convert_alpha()
         self.flash_img = pg.image.load(path.join(self.img_folder, FLASH_IMG)).convert_alpha()
