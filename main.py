@@ -59,10 +59,12 @@ class Game:
         self.player_walk_imgs = []
         self.mob_walk_imgs = []
         self.bloods_imgs = []
+        self.gibs_imgs = []
         self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS, True)
         self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS, True)
         self.mob_walk_imgs = self.make_anim_list(MOB_WALK_IMGS, True)
         self.bloods_imgs = self.make_anim_list(BLOOD_IMGS, True)
+        self.gibs_imgs = self.make_anim_list(GIB_IMGS, True)
         self.bullet_img = pg.image.load(path.join(self.img_folder, BULLET_IMG)).convert_alpha()
         self.flash_img = pg.image.load(path.join(self.img_folder, FLASH_IMG)).convert_alpha()
         self.title_font = path.join(self.img_folder, 'press_start.ttf')
@@ -88,7 +90,7 @@ class Game:
     def new(self):
         # start a new game
         self.state = State.PLAY
-        self.all_sprites = pg.sprite.Group()
+        self.all_sprites = pg.sprite.LayeredUpdates()
         self.walls = pg.sprite.Group()
         self.spikes = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -162,6 +164,8 @@ class Game:
             for bullet in hits[mob]:
                 self.hit_snd.play()
                 BloodSplatter(self, hits[mob][0].pos)
+                gimme_gibs(self, hits[mob][0].pos, 5)
+                #Gib(self, hits[mob][0].pos)
                 mob.kill()
 
         # player hits teleportsd

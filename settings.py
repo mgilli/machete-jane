@@ -34,6 +34,7 @@ WALL_LAYER = 1
 PLAYER_LAYER = 2
 BULLET_LAYER = 3
 EFFECT_LAYER = 4
+BLOOD_LAYER = 5
 MOB_LAYER = 2
 EFFECTS_LAYER = 1
 
@@ -79,3 +80,7 @@ HIT_SND = 'hit.wav'
 
 BLOOD_IMGS = ['blood1.png','blood2.png','blood3.png','blood4.png']
 FLASH_IMG = 'flash.png'
+
+GIB_IMGS = ['gib1.png','gib2.png','gib3.png','gib4.png','gib5.png','gib6.png','gib7.png','gib8.png']
+GIB_IMPULSE = 20
+GIB_FRICTION = -0.20
