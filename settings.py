@@ -50,6 +50,8 @@ PLAYER_WALK_IMGS = ['jane-walking0.png','jane-walking1.png', 'jane-walking2.png'
 
 PLAYER_ANIM_SPEED = 180
 
+PLAYER_DEATH_DURATION = 750
+
 # Gun settings
 
 BULLET_IMG = 'bullet.png'
@@ -81,6 +83,10 @@ HIT_SND = 'hit.wav'
 BLOOD_IMGS = ['blood1.png','blood2.png','blood3.png','blood4.png']
 FLASH_IMG = 'flash.png'
 
+BLOOD_DURATION = 64
+
 GIB_IMGS = ['gib1.png','gib2.png','gib3.png','gib4.png','gib5.png','gib6.png','gib7.png','gib8.png']
+PLAYER_GIB_IMGS = ['jane_gib1.png', 'jane_gib2.png', 'jane_gib3.png', 'jane_gib4.png',
+                   'jane_gib5.png', 'jane_gib6.png', 'jane_gib7.png', ]
 GIB_IMPULSE = 20
 GIB_FRICTION = -0.20

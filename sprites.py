@@ -6,9 +6,15 @@ vec = pg.math.Vector2
 
 def gimme_gibs(game, pos, qty):
     for i in range(qty):
-        impulse = randint(-20, 20)
+        impulse = randint(-GIB_IMPULSE, GIB_IMPULSE)
         #print(impulse)
         Gib(game, pos, impulse)
+
+def gimme_player_gibs(game, pos):
+    for image in game.player_gibs_imgs:
+        impulse = randint(-20, 20)
+        #print(impulse)
+        Player_Gib(game, pos, impulse, image)
 
 def flip_images(list):
     flipped_imgs = []
@@ -350,7 +356,7 @@ class BloodSplatter(pg.sprite.Sprite):
         #self.last_update = pg.time.get_ticks()
 
     def update(self):
-        if pg.time.get_ticks() - self.spawn_time > 32:
+        if pg.time.get_ticks() - self.spawn_time > BLOOD_DURATION:
             self.kill()
         # Failed attempt to animate blood, small pixles don't look good
         # now = pg.time.get_ticks()
@@ -381,7 +387,6 @@ class Gib(pg.sprite.Sprite):
         self.rect.midbottom = self.pos
         self.hit_rect.midbottom = self.pos
         self.impulse = impulse
-        print(self.impulse)
         self.vel = vec(self.impulse,-abs(self.impulse))
         self.acc = vec(0,-randint(0, abs(self.impulse)))
         self.spawn_time = pg.time.get_ticks()
@@ -390,6 +395,50 @@ class Gib(pg.sprite.Sprite):
 
     def update(self):
         if pg.time.get_ticks() - self.spawn_time > 500:
+            self.kill()
+
+        self.acc = vec(0,GRAVITY)
+
+        #self.acc.x += MOB_ACC * self.direction
+
+        self.acc.x += self.vel.x * GIB_FRICTION
+
+        #laws of motion, acceleration is added to velocity.
+        #In the x axis ,if the button is not pressed, not change in velocity (except friction)
+        self.vel += self.acc
+
+        #update position, v+1/2Gamma (not squared?) and collisions
+        self.pos.y += self.vel.y + 0.5 * self.acc.y
+        self.hit_rect.bottom = self.pos.y
+        collide_with_walls(self, self.game.walls, 'y')
+        self.rect.bottom = self.hit_rect.bottom + 25
+
+        self.pos.x += self.vel.x + 0.5 * self.acc.x
+        self.hit_rect.centerx = self.pos.x
+        collide_with_walls(self, self.game.walls, 'x')
+        self.rect.centerx = self.hit_rect.centerx
+
+class Player_Gib(pg.sprite.Sprite):
+    def __init__(self, game, pos, impulse, image):
+        self._layer = EFFECTS_LAYER
+        self.groups =  game.all_sprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.pos = vec(pos)
+        self.image = pg.transform.flip(image,choice([True, False]), choice([True, False]))
+        self.rect = self.image.get_rect()
+        self.hit_rect = pg.Rect(0,0,(self.rect.width * 0.25), (self.rect.height * 0.25))
+        self.rect.midbottom = self.pos
+        self.hit_rect.midbottom = self.pos
+        self.impulse = impulse
+        self.vel = vec(self.impulse,-abs(self.impulse))
+        self.acc = vec(0,-randint(0, abs(self.impulse)))
+        self.spawn_time = pg.time.get_ticks()
+        #self.current_size = 1
+        #self.last_update = pg.time.get_ticks()
+
+    def update(self):
+        if pg.time.get_ticks() - self.spawn_time > PLAYER_DEATH_DURATION:
             self.kill()
 
         self.acc = vec(0,GRAVITY)

@@ -60,11 +60,13 @@ class Game:
         self.mob_walk_imgs = []
         self.bloods_imgs = []
         self.gibs_imgs = []
+        self.player_gibs_imgs = []
         self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS, True)
         self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS, True)
         self.mob_walk_imgs = self.make_anim_list(MOB_WALK_IMGS, True)
         self.bloods_imgs = self.make_anim_list(BLOOD_IMGS, True)
         self.gibs_imgs = self.make_anim_list(GIB_IMGS, True)
+        self.player_gibs_imgs = self.make_anim_list(PLAYER_GIB_IMGS, True)
         self.bullet_img = pg.image.load(path.join(self.img_folder, BULLET_IMG)).convert_alpha()
         self.flash_img = pg.image.load(path.join(self.img_folder, FLASH_IMG)).convert_alpha()
         self.title_font = path.join(self.img_folder, 'press_start.ttf')
@@ -136,44 +138,51 @@ class Game:
             self.draw()
 
 
+    def player_dies(self):
+        self.hit_snd.play()
+        self.lose_snd.play()
+        self.state = State.GAME_OVER
+        BloodSplatter(self, self.player.pos)
+        gimme_player_gibs(self, self.player.rect.center)
+        self.player.kill()
+        self.player_death_time = pg.time.get_ticks()
+
     def update(self):
 
 
         # Game Loop - Update
         self.all_sprites.update()
 
-        #player hits spikes:
-        hits = pg.sprite.spritecollide(self.player, self.spikes, False)
-        for hit in hits:
-            self.lose_snd.play()
-            #self.hit_snd.play()
-            self.state = State.GAME_OVER
-            self.playing = False
+        if self.state == State.GAME_OVER:
+            if pg.time.get_ticks() - self.player_death_time > PLAYER_DEATH_DURATION:
+                self.playing = False
+        else:
+            #player hits spikes:
+            hits = pg.sprite.spritecollide(self.player, self.spikes, False)
+            for hit in hits:
+                self.player_dies()
 
-        #player hits mobs:
-        hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect_mob)
-        for hit in hits:
-            self.hit_snd.play()
-            self.lose_snd.play()
-            self.state = State.GAME_OVER
-            self.playing = False
+            #player hits mobs:
+            hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect_mob)
+            for hit in hits:
+                self.player_dies()
 
-        #mobs hits bullets:
-        hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
-        for mob in hits:
-            for bullet in hits[mob]:
-                self.hit_snd.play()
-                BloodSplatter(self, hits[mob][0].pos)
-                gimme_gibs(self, hits[mob][0].pos, 5)
-                #Gib(self, hits[mob][0].pos)
-                mob.kill()
+            #mobs hits bullets:
+            hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
+            for mob in hits:
+                for bullet in hits[mob]:
+                    self.hit_snd.play()
+                    BloodSplatter(self, hits[mob][0].pos)
+                    gimme_gibs(self, hits[mob][0].pos, 2)
+                    #Gib(self, hits[mob][0].pos)
+                    mob.kill()
 
-        # player hits teleportsd
-        hits = pg.sprite.spritecollide(self.player, self.teleports, False)
-        for hit in hits:
-            self.current_level = hit.destination
-            self.state = State.CHANGE_LEVEL
-            self.playing = False
+            # player hits teleportsd
+            hits = pg.sprite.spritecollide(self.player, self.teleports, False)
+            for hit in hits:
+                self.current_level = hit.destination
+                self.state = State.CHANGE_LEVEL
+                self.playing = False
 
     def events(self):
 
