@@ -47,7 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
-        self.current_level = 'level1.tmx'
+        self.current_level = 'level6.tmx'
         game_folder = path.dirname(__file__)
         self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')
@@ -79,6 +79,7 @@ class Game:
         self.jump_snd = pg.mixer.Sound(path.join(snd_folder, JUMP_SND))
         self.hit_snd = pg.mixer.Sound(path.join(snd_folder, HIT_SND))
         self.lose_snd = pg.mixer.Sound(path.join(snd_folder, LOSE_SND))
+        self.die_snd = pg.mixer.Sound(path.join(snd_folder, DIE_SND))
 
     def make_anim_list(self, list, resize):
         images_list = []
@@ -111,6 +112,10 @@ class Game:
             if tile_object.name == 'wall':
                 Obstacle(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
+            if tile_object.name == 'temp_plat':
+                duration = tile_object.properties['duration']
+                TempPlatform(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
+                         tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER, duration)
             if tile_object.name == 'spike':
                 Spike(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
@@ -139,8 +144,8 @@ class Game:
 
 
     def player_dies(self):
+        self.die_snd.play()
         self.hit_snd.play()
-        self.lose_snd.play()
         self.state = State.GAME_OVER
         BloodSplatter(self, self.player.pos)
         gimme_player_gibs(self, self.player.rect.center)
@@ -158,7 +163,7 @@ class Game:
                 self.playing = False
         else:
             #player hits spikes:
-            hits = pg.sprite.spritecollide(self.player, self.spikes, False)
+            hits = pg.sprite.spritecollide(self.player, self.spikes, False, collide_hit_rect)
             for hit in hits:
                 self.player_dies()
 

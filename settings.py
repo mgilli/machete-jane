@@ -77,6 +77,7 @@ SHOOT_SND = 'shoot.wav'
 JUMP_SND = 'jump.wav'
 LOSE_SND = 'lose2.wav'
 HIT_SND = 'hit.wav'
+DIE_SND = 'die.wav'
 
 #effects settings
 

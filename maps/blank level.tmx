@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="16" tileheight="16" nextobjectid="20">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="16" tileheight="16" nextobjectid="62">
  <tileset firstgid="1" source="../tiled map.tsx"/>
  <layer name="Background" width="16" height="9">
   <data encoding="csv">
@@ -17,8 +17,8 @@
  <layer name="Decoration" width="16" height="9">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,72,72,72,72,72,72,72,72,72,0,72,72,72,72,0,
-0,141,201,137,201,203,200,141,204,200,200,138,200,203,136,0,
+0,72,72,72,72,72,72,72,72,72,72,72,72,72,72,0,
+0,203,204,200,203,200,141,204,140,200,138,200,141,136,137,0,
 0,73,73,73,73,73,73,73,73,73,73,73,73,73,73,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -29,34 +29,32 @@
  </layer>
  <layer name="Walls" width="16" height="9">
   <data encoding="csv">
-67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-195,0,0,0,0,0,0,0,0,0,1,0,0,0,0,10,
-195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,74,
-195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,67,
-195,0,0,0,0,0,0,0,0,2,3,4,0,0,0,195,
-195,0,0,0,2,3,4,0,0,0,0,0,0,0,0,195,
+67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,67,
 195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
-195,0,0,0,0,0,0,0,0,0,0,0,67,260,262,195,
-257,3,3,3,3,3,3,3,3,3,3,3,66,3,3,258
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+257,3,3,3,3,3,3,3,3,3,3,3,3,3,3,258
 </data>
  </layer>
  <objectgroup name="Obstacles">
   <object id="1" name="wall" x="0" y="128" width="256" height="16"/>
   <object id="2" name="wall" x="0" y="0" width="16" height="128"/>
-  <object id="3" name="wall" x="64" y="80" width="48" height="16"/>
-  <object id="4" name="wall" x="144" y="64" width="48" height="16"/>
-  <object id="5" name="wall" x="160" y="16" width="16" height="16"/>
-  <object id="6" name="wall" x="192" y="112" width="16" height="16"/>
-  <object id="7" name="wall" x="240" y="48" width="16" height="80"/>
-  <object id="10" name="spike" x="208" y="124" width="32" height="4"/>
+  <object id="7" name="wall" x="240" y="0" width="16" height="128"/>
   <object id="11" x="236" y="128" width="4"/>
-  <object id="16" name="player" x="68" y="72" width="8" height="8"/>
-  <object id="17" name="mob" x="164" y="56" width="8" height="8"/>
-  <object id="18" name="teleport" x="244" y="44" width="8" height="4">
+  <object id="16" name="player" x="96" y="120" width="8" height="8"/>
+  <object id="39" name="mob" x="40" y="120" width="8" height="8"/>
+  <object id="40" name="teleport" x="20" y="124" width="8" height="4">
    <properties>
-    <property name="destination" value="level2.tmx"/>
+    <property name="destination" value="level1.tmx"/>
    </properties>
   </object>
-  <object id="19" name="wall" x="252" y="0" width="4" height="48"/>
+  <object id="52" name="spike" x="64" y="124" width="16" height="4"/>
+  <object id="58" name="wall" x="96" y="64" width="16" height="16"/>
+  <object id="60" name="wall" x="48" y="64" width="32" height="16"/>
+  <object id="61" name="wall" x="128" y="64" width="16" height="32"/>
  </objectgroup>
 </map>

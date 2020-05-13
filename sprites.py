@@ -51,6 +51,9 @@ def collide_with_walls(sprite, group, dir):
             if hits[0].rect.centery > sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.top - 0
                 sprite.jumping = False
+                print(hits[0].groups)
+                if hits[0] == TempPlatform:
+                    print('OK')
             if hits[0].rect.centery < sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height
             sprite.vel.y = 0
@@ -191,6 +194,28 @@ class Obstacle(pg.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+
+class TempPlatform(pg.sprite.Sprite):
+    def __init__(self, game, x, y, w, h, duration):
+        self.groups =  game.walls
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.image = pg.Surface((w,h))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.touched = False
+        self.touched_time = 0
+        self.duration = duration
+
+    def update(self):
+        if touched:
+            if pg.time.get_ticks() - self.touched_time > self.duration:
+                self.kill()
+
+    def trigger(self):
+        if not self.touched:
+            self.touched = True
+            self.duration = pg.time.get_ticks()
 
 class Spike(pg.sprite.Sprite):
     def __init__(self, game, x, y, w, h):

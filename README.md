@@ -7,6 +7,8 @@ Arrows to Move (or WASD on a keyboard set to QWERTY)
 Space to Jump
 Left ctrl or Left alt to Shoot
 
+Press "t" for toggling debug (shows hitboxes)
+
 
 2D Art and Music made by Mathias Gilli
 
