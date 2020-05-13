@@ -8,7 +8,11 @@ Space to Jump
 Left ctrl or Left alt to Shoot
 
 
-Art and Music made by Mathias Gilli
+2D Art and Music made by Mathias Gilli
+
+2D Art and Music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+http://creativecommons.org/licenses/by-nc-sa/4.0/
+
 
 
 Art created with Gimp
@@ -25,7 +29,9 @@ https://github.com/TerryCavanagh/boscaceoil
 https://boscaceoil.net/
 
 Code heavily influenced  by (and sometimes shamelessy copy-pasted from) "kids can code" pygame tutorials:
+Under MIT License - Copyright (c) 2017 KidsCanCode
 https://github.com/kidscancode/pygame_tutorials 
+http://kidscancode.org/lessons
 https://www.youtube.com/channel/UCNaPQ5uLX5iIEHUCLmfAgKg
 
 Levels created with Tiled:
