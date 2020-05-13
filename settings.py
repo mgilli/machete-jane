@@ -50,7 +50,7 @@ PLAYER_WALK_IMGS = ['jane-walking0.png','jane-walking1.png', 'jane-walking2.png'
 
 PLAYER_ANIM_SPEED = 180
 
-PLAYER_DEATH_DURATION = 750
+PLAYER_DEATH_DURATION = 1250
 
 # Gun settings
 
@@ -90,3 +90,5 @@ PLAYER_GIB_IMGS = ['jane_gib1.png', 'jane_gib2.png', 'jane_gib3.png', 'jane_gib4
                    'jane_gib5.png', 'jane_gib6.png', 'jane_gib7.png', ]
 GIB_IMPULSE = 20
 GIB_FRICTION = -0.20
+
+GIB_DURATION = 1000

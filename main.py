@@ -47,7 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
-        self.current_level = 'level3.tmx'
+        self.current_level = 'level1.tmx'
         game_folder = path.dirname(__file__)
         self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')
@@ -224,11 +224,11 @@ class Game:
 
     def show_go_screen(self):
         # game over/continue
-        self.screen.fill(BLACK)
+        #self.screen.fill(BLACK)
         self.draw_text("GAME OVER", self.title_font, 50, RED,
-                       WIDTH / 2, HEIGHT / 2, align="center")
-        self.draw_text("Press a key to start", self.title_font, 25, WHITE,
-                       WIDTH / 2, HEIGHT * 3 / 4, align="center")
+                       WIDTH / 2, HEIGHT * 0.45, align="center")
+        self.draw_text("Press any key to start", self.title_font, 25, BLACK,
+                       WIDTH / 2, HEIGHT * 0.6, align="center")
         pg.display.flip()
         self.wait_for_key()
 
@@ -236,18 +236,22 @@ class Game:
 
         self.screen.fill(BLACK)
         self.draw_text("NEXT LEVEL", self.title_font, 50, WHITE,
-                       WIDTH / 2, HEIGHT / 2, align="center")
-        self.draw_text("Press a key to continue", self.title_font, 25, WHITE,
-                       WIDTH / 2, HEIGHT * 3 / 4, align="center")
+                       WIDTH / 2, HEIGHT * 0.45 , align="center")
+        self.draw_text("Press any key to continue", self.title_font, 25, WHITE,
+                       WIDTH / 2, HEIGHT * 0.6, align="center")
         pg.display.flip()
         self.wait_for_key()
 
     def show_start_screen(self):
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BLACK)
-        self.draw_text("MACHETE JANE", self.title_font, 50, RED,
+        self.draw_text("MACHETE JANE", self.title_font, 60, RED,
+                       WIDTH / 2, HEIGHT * 0.25, align="center")
+        self.draw_text('In', self.title_font, 20, WHITE,
+                       WIDTH / 2, HEIGHT * 0.4, align="center")
+        self.draw_text('"Who Stole My Machete ?"', self.title_font, 25, WHITE,
                        WIDTH / 2, HEIGHT / 2, align="center")
-        self.draw_text("Press a key to start", self.title_font, 25, WHITE,
+        self.draw_text("Press any key to start", self.title_font, 20, WHITE,
                        WIDTH / 2, HEIGHT * 3 / 4, align="center")
         pg.display.flip()
         self.wait_for_key()

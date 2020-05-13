@@ -394,7 +394,7 @@ class Gib(pg.sprite.Sprite):
         #self.last_update = pg.time.get_ticks()
 
     def update(self):
-        if pg.time.get_ticks() - self.spawn_time > 500:
+        if pg.time.get_ticks() - self.spawn_time > GIB_DURATION:
             self.kill()
 
         self.acc = vec(0,GRAVITY)
@@ -438,7 +438,7 @@ class Player_Gib(pg.sprite.Sprite):
         #self.last_update = pg.time.get_ticks()
 
     def update(self):
-        if pg.time.get_ticks() - self.spawn_time > PLAYER_DEATH_DURATION:
+        if pg.time.get_ticks() - self.spawn_time > PLAYER_DEATH_DURATION + 1000:
             self.kill()
 
         self.acc = vec(0,GRAVITY)
