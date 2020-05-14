@@ -51,9 +51,8 @@ def collide_with_walls(sprite, group, dir):
             if hits[0].rect.centery > sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.top - 0
                 sprite.jumping = False
-                print(hits[0].groups)
-                if hits[0] == TempPlatform:
-                    print('OK')
+                if type(hits[0]).__name__ == 'TempPlatform' :
+                    hits[0].trigger()
             if hits[0].rect.centery < sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height
             sprite.vel.y = 0
@@ -126,7 +125,7 @@ class Player(pg.sprite.Sprite):
             self.acc.x =  PLAYER_ACC
             #self.image = self.image_right
             self.gun_dir = 'right'
-        if keys[pg.K_LCTRL] or keys[pg.K_LALT]:
+        if keys[pg.K_LCTRL] or keys[pg.K_MODE]: #or keys[pg.K_RALT]
             self.shoot()
 
     def animate(self):
@@ -196,26 +195,44 @@ class Obstacle(pg.sprite.Sprite):
         self.rect.topleft = (x, y)
 
 class TempPlatform(pg.sprite.Sprite):
-    def __init__(self, game, x, y, w, h, duration):
-        self.groups =  game.walls
+    def __init__(self, game, x, y, w, h):
+        self.groups =  game.all_sprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
-        self.image = pg.Surface((w,h))
-        self.image.fill(GREEN)
+        self.game = game
+        self.image = self.game.temp_plat_img
+        self.image = resize_to_multiplier(self.image, TILE_SIZE_MULTIPLIER)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        self.destruction_imgs = self.game.temp_plat_dest_imgs
         self.touched = False
-        self.touched_time = 0
-        self.duration = duration
+        self.touched_time = pg.time.get_ticks()
+        self.duration = PLAT_DEST__ANIM_SPEED * 4
+        self.last_update = 0
+        self.current_frame = 0
+
 
     def update(self):
-        if touched:
+        if self.touched:
+            now = pg.time.get_ticks()
+            if now - self.last_update > PLAT_DEST__ANIM_SPEED:
+                if self.current_frame == len(self.destruction_imgs)-1 :
+                    self.kill()
+                else:
+                    self.last_update = now
+                    self.current_frame = (self.current_frame +1) % len(self.destruction_imgs)
+                    top = self.rect.midtop
+                    self.image = self.destruction_imgs[self.current_frame]
+                    self.rect = self.image.get_rect()
+                    self.rect.midtop = top
+
             if pg.time.get_ticks() - self.touched_time > self.duration:
-                self.kill()
+                self.game.walls.remove(self)
+                #self.kill()
 
     def trigger(self):
         if not self.touched:
+            self.touched_time = pg.time.get_ticks()
             self.touched = True
-            self.duration = pg.time.get_ticks()
 
 class Spike(pg.sprite.Sprite):
     def __init__(self, game, x, y, w, h):

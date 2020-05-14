@@ -61,14 +61,17 @@ class Game:
         self.bloods_imgs = []
         self.gibs_imgs = []
         self.player_gibs_imgs = []
+        self.temp_plat_dest_imgs = []
         self.player_idle_imgs = self.make_anim_list(PLAYER_IDLE_IMGS, True)
         self.player_walk_imgs = self.make_anim_list(PLAYER_WALK_IMGS, True)
         self.mob_walk_imgs = self.make_anim_list(MOB_WALK_IMGS, True)
         self.bloods_imgs = self.make_anim_list(BLOOD_IMGS, True)
         self.gibs_imgs = self.make_anim_list(GIB_IMGS, True)
+        self.temp_plat_dest_imgs = self.make_anim_list(TEMP_PLAT_DEST_IMGS, True)
         self.player_gibs_imgs = self.make_anim_list(PLAYER_GIB_IMGS, True)
         self.bullet_img = pg.image.load(path.join(self.img_folder, BULLET_IMG)).convert_alpha()
         self.flash_img = pg.image.load(path.join(self.img_folder, FLASH_IMG)).convert_alpha()
+        self.temp_plat_img = pg.image.load(path.join(self.img_folder, TEMP_PLATFORM_IMG)).convert_alpha()
         self.title_font = path.join(self.img_folder, 'press_start.ttf')
 
 
@@ -113,9 +116,8 @@ class Game:
                 Obstacle(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
             if tile_object.name == 'temp_plat':
-                duration = tile_object.properties['duration']
                 TempPlatform(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
-                         tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER, duration)
+                         tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
             if tile_object.name == 'spike':
                 Spike(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)

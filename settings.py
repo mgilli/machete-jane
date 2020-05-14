@@ -81,6 +81,18 @@ DIE_SND = 'die.wav'
 
 #effects settings
 
+TEMP_PLATFORM_IMG = 'temp_plat.png'
+TEMP_PLAT_DEST_IMGS = ['temp_plat_destruction00.png', 'temp_plat_destruction01.png',
+                       'temp_plat_destruction02.png', 'temp_plat_destruction03.png',
+                       'temp_plat_destruction04.png', 'temp_plat_destruction05.png',
+                       'temp_plat_destruction06.png', 'temp_plat_destruction07.png',
+                       'temp_plat_destruction08.png', 'temp_plat_destruction09.png']
+PLAT_DEST__ANIM_SPEED = 100
+
+# for i in range(10):
+#     TEMP_PLAT_DEST_IMGS.append('temp_plat_destruction0{}.png'.format(i))
+
+
 BLOOD_IMGS = ['blood1.png','blood2.png','blood3.png','blood4.png']
 FLASH_IMG = 'flash.png'
 
