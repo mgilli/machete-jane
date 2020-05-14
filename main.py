@@ -127,6 +127,9 @@ class Game:
             if tile_object.name == 'mob':
                 Mob(self, tile_object.x * TILE_SIZE_MULTIPLIER,
                     (tile_object.y + tile_object.height) * TILE_SIZE_MULTIPLIER)
+            if tile_object.name == 'path_mob':
+                Mob(self, tile_object.x * TILE_SIZE_MULTIPLIER,
+                    (tile_object.y + tile_object.height) * TILE_SIZE_MULTIPLIER)
             if tile_object.name == 'teleport':
                 dest = tile_object.properties['destination']
                 Teleport(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
