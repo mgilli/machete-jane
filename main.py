@@ -47,7 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
-        self.current_level = 'level6.tmx'
+        self.current_level = 'level1.tmx'
         game_folder = path.dirname(__file__)
         self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')
@@ -98,6 +98,7 @@ class Game:
         self.state = State.PLAY
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.walls = pg.sprite.Group()
+        self.mob_walls = pg.sprite.Group()
         self.spikes = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
@@ -115,6 +116,9 @@ class Game:
             if tile_object.name == 'wall':
                 Obstacle(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
+            if tile_object.name == 'mob_wall':
+                MobWall(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
+                         tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
             if tile_object.name == 'temp_plat':
                 TempPlatform(self, tile_object.x * TILE_SIZE_MULTIPLIER, tile_object.y * TILE_SIZE_MULTIPLIER,
                          tile_object.width * TILE_SIZE_MULTIPLIER, tile_object.height * TILE_SIZE_MULTIPLIER)
@@ -125,9 +129,6 @@ class Game:
                 self.player = Player(self, tile_object.x * TILE_SIZE_MULTIPLIER,
                                      (tile_object.y + tile_object.height) * TILE_SIZE_MULTIPLIER)
             if tile_object.name == 'mob':
-                Mob(self, tile_object.x * TILE_SIZE_MULTIPLIER,
-                    (tile_object.y + tile_object.height) * TILE_SIZE_MULTIPLIER)
-            if tile_object.name == 'path_mob':
                 Mob(self, tile_object.x * TILE_SIZE_MULTIPLIER,
                     (tile_object.y + tile_object.height) * TILE_SIZE_MULTIPLIER)
             if tile_object.name == 'teleport':
@@ -187,11 +188,14 @@ class Game:
                     #Gib(self, hits[mob][0].pos)
                     mob.kill()
 
-            # player hits teleportsd
+            # player hits teleports
             hits = pg.sprite.spritecollide(self.player, self.teleports, False)
             for hit in hits:
                 self.current_level = hit.destination
-                self.state = State.CHANGE_LEVEL
+                if self.current_level == 'End of Game':
+                    self.state = State.GAME_WON
+                else:
+                    self.state = State.CHANGE_LEVEL
                 self.playing = False
 
     def events(self):
@@ -211,6 +215,9 @@ class Game:
             if event.type == pg.KEYUP:
                 if event.key == pg.K_t:
                     self.toggle_hitbox = not self.toggle_hitbox
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_DOWN:
+                    self.player_dies()
 
 
 
@@ -223,6 +230,7 @@ class Game:
         if self.toggle_hitbox:
             pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
             self.walls.draw(self.screen)
+            self.mob_walls.draw(self.screen)
             self.spikes.draw(self.screen)
             for mob in self.mobs:
                 pg.draw.rect(self.screen, RED, mob.hit_rect, 2 )
@@ -250,6 +258,19 @@ class Game:
         self.draw_text("Press any key to continue", self.title_font, 25, WHITE,
                        WIDTH / 2, HEIGHT * 0.6, align="center")
         pg.display.flip()
+        self.wait_for_key()
+
+    def show_end_screen(self):
+
+        self.screen.fill(BLACK)
+        self.draw_text("YOU DID IT !!!!", self.title_font, 50, RED,
+                       WIDTH / 2, HEIGHT * 0.25 , align="center")
+        self.draw_text('You finished the game', self.title_font, 25, WHITE,
+                       WIDTH / 2, HEIGHT * 0.4, align="center")
+        self.draw_text("Now rest", self.title_font, 20, WHITE,
+                       WIDTH / 2, HEIGHT * 3 / 4, align="center")
+        pg.display.flip()
+        self.current_level = 'level1.tmx'
         self.wait_for_key()
 
     def show_start_screen(self):
@@ -289,9 +310,11 @@ class State(Enum):
     PLAY = 3
     GAME_OVER = 4
     CHANGE_LEVEL = 5
+    GAME_WON = 6
 
 g = Game()
 g.show_start_screen()
+
 
 while g.running:
     g.new()
@@ -300,5 +323,7 @@ while g.running:
         g.show_next_level_screen()
     elif g.state == State.GAME_OVER:
         g.show_go_screen()
+    elif g.state == State.GAME_WON:
+        g.show_end_screen()
 
 pg.quit()

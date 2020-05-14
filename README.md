@@ -10,7 +10,7 @@ Left ctrl or Left alt to Shoot
 Press "t" for toggling debug (shows hitboxes)
 
 
-2D Art and Music made by Mathias Gilli
+2D Art and Music made by mgilli
 
 2D Art and Music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 http://creativecommons.org/licenses/by-nc-sa/4.0/

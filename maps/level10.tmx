@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="16" height="9" tilewidth="16" tileheight="16" nextobjectid="113">
+ <tileset firstgid="1" source="../tiled map.tsx"/>
+ <layer name="Background" width="16" height="9">
+  <data encoding="csv">
+135,198,197,135,134,199,197,133,71,135,134,199,135,133,198,198,
+71,197,70,199,70,134,133,70,197,134,198,134,133,199,133,197,
+70,70,197,198,197,197,197,133,135,70,198,199,133,197,71,199,
+134,70,197,134,199,135,198,133,133,70,198,70,197,134,197,133,
+197,197,197,135,133,71,199,135,198,70,71,70,70,134,134,133,
+198,198,133,133,133,198,197,198,70,134,199,135,197,135,70,134,
+135,71,134,134,70,133,199,199,198,198,70,199,198,133,135,135,
+134,198,133,70,133,199,134,135,133,198,134,197,71,70,71,70,
+135,197,70,70,199,134,133,71,133,133,134,198,198,197,135,135
+</data>
+ </layer>
+ <layer name="Decoration" width="16" height="9">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,72,72,72,72,72,72,72,72,72,72,72,72,72,72,0,
+0,203,204,200,203,200,141,204,140,200,138,200,141,136,137,0,
+0,73,73,73,73,73,73,73,73,73,73,73,73,73,73,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,72,72,72,72,72,72,72,72,72,72,72,72,72,72,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="Walls" width="16" height="9">
+  <data encoding="csv">
+67,0,0,0,329,0,0,0,0,0,0,329,0,0,0,67,
+195,0,193,3,3,3,3,194,0,193,3,3,3,194,0,195,
+195,0,195,0,0,0,0,195,0,195,0,0,0,195,0,195,
+195,0,195,0,0,0,0,195,0,195,0,0,0,195,0,195,
+195,0,195,0,0,0,0,195,0,195,0,0,0,195,0,195,
+195,0,257,3,3,3,3,258,0,257,3,3,3,258,0,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,10,195,
+195,0,0,0,0,0,0,0,0,0,0,0,0,0,74,195,
+257,3,3,3,3,3,3,3,3,3,3,3,3,3,3,258
+</data>
+ </layer>
+ <objectgroup name="Obstacles">
+  <object id="1" name="wall" x="0" y="128" width="256" height="16"/>
+  <object id="2" name="wall" x="0" y="0" width="16" height="128"/>
+  <object id="7" name="wall" x="240" y="0" width="16" height="128"/>
+  <object id="11" x="236" y="128" width="4"/>
+  <object id="16" name="player" x="132" y="120" width="8" height="8"/>
+  <object id="39" name="mobs" x="52" y="120" width="8" height="8"/>
+  <object id="40" name="teleport" x="232" y="124" width="8" height="4">
+   <properties>
+    <property name="destination" value="End of Game"/>
+   </properties>
+  </object>
+  <object id="52" name="spike" x="84" y="36" width="16" height="4"/>
+  <object id="58" name="wall" x="112" y="16" width="16" height="80"/>
+  <object id="61" name="wall" x="208" y="32" width="16" height="48"/>
+  <object id="63" name="mob" x="180" y="120" width="8" height="8"/>
+  <object id="64" name="mob" x="212" y="120" width="8" height="8"/>
+  <object id="68" name="mobs" x="84" y="120" width="8" height="8"/>
+  <object id="69" name="mobs" x="20" y="120" width="8" height="8"/>
+  <object id="75" name="mob" x="164" y="8" width="8" height="8"/>
+  <object id="76" name="mob" x="116" y="8" width="8" height="8"/>
+  <object id="77" name="mob" x="148" y="8" width="8" height="8"/>
+  <object id="78" name="temp_plat" x="128" y="80" width="16" height="16"/>
+  <object id="79" name="temp_plat" x="128" y="64" width="16" height="16"/>
+  <object id="80" name="temp_plat" x="128" y="48" width="16" height="16"/>
+  <object id="81" name="temp_plat" x="128" y="32" width="16" height="16"/>
+  <object id="82" name="wall" x="160" y="80" width="64" height="16"/>
+  <object id="83" name="wall" x="32" y="80" width="80" height="16"/>
+  <object id="84" name="wall" x="144" y="16" width="80" height="16"/>
+  <object id="86" name="wall" x="32" y="16" width="80" height="16"/>
+  <object id="87" name="mob" x="228" y="24" width="8" height="8"/>
+  <object id="90" name="mob" x="100" y="8" width="8" height="8"/>
+  <object id="91" name="mob" x="84" y="8" width="8" height="8"/>
+  <object id="92" name="wall" x="64" y="0" width="16" height="16"/>
+  <object id="94" name="wall" x="176" y="0" width="16" height="16"/>
+  <object id="95" name="temp_plat" x="224" y="64" width="16" height="16"/>
+  <object id="97" name="temp_plat" x="224" y="80" width="16" height="16"/>
+  <object id="99" name="wall" x="144" y="32" width="16" height="64"/>
+  <object id="100" name="mob" x="232" y="8" width="8" height="8"/>
+  <object id="101" name="wall" x="32" y="32" width="16" height="48"/>
+  <object id="102" name="temp_plat" x="16" y="80" width="16" height="16"/>
+  <object id="103" name="temp_plat" x="16" y="64" width="16" height="16"/>
+  <object id="104" name="mob" x="20" y="40" width="8" height="8"/>
+  <object id="105" name="mob" x="20" y="24" width="8" height="8"/>
+  <object id="106" name="mob" x="20" y="8" width="8" height="8"/>
+  <object id="107" name="mob" x="36" y="8" width="8" height="8"/>
+  <object id="108" name="mob" x="52" y="8" width="8" height="8"/>
+  <object id="109" name="mob" x="224" y="40" width="8" height="8"/>
+  <object id="110" name="mob" x="132" y="8" width="8" height="8"/>
+  <object id="111" name="mob" x="132" y="24" width="8" height="8"/>
+  <object id="112" name="mob" x="196" y="120" width="8" height="8"/>
+ </objectgroup>
+</map>

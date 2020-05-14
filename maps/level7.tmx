@@ -57,11 +57,7 @@
   <object id="52" name="spike" x="16" y="124" width="224" height="4"/>
   <object id="60" name="wall" x="176" y="64" width="64" height="16"/>
   <object id="67" name="temp_plat" x="148" y="80" width="16" height="16"/>
-  <object id="72" name="mob" x="228" y="56" width="8" height="8">
-   <properties>
-    <property name="duration" type="int" value="500"/>
-   </properties>
-  </object>
+  <object id="72" name="mob" x="228" y="56" width="8" height="8"/>
   <object id="79" name="wall" x="16" y="64" width="64" height="16"/>
  </objectgroup>
 </map>

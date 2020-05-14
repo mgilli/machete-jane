@@ -194,6 +194,15 @@ class Obstacle(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
+class MobWall(pg.sprite.Sprite):
+    def __init__(self, game, x, y, w, h):
+        self.groups =  game.mob_walls
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.image = pg.Surface((w,h))
+        self.image.fill(YELLOW)
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
 class TempPlatform(pg.sprite.Sprite):
     def __init__(self, game, x, y, w, h):
         self.groups =  game.all_sprites, game.walls
@@ -303,11 +312,13 @@ class Mob(pg.sprite.Sprite):
         #update position, v+1/2Gamma (not squared?) and collisions
         self.pos.y += self.vel.y + 0.5 * self.acc.y
         self.hit_rect.bottom = self.pos.y
+        collide_with_walls(self, self.game.mob_walls, 'y')
         collide_with_walls(self, self.game.walls, 'y')
         self.rect.bottom = self.hit_rect.bottom
 
         self.pos.x += self.vel.x + 0.5 * self.acc.x
         self.hit_rect.centerx = self.pos.x
+        collide_with_walls(self, self.game.mob_walls, 'x')
         collide_with_walls(self, self.game.walls, 'x')
         self.rect.centerx = self.hit_rect.centerx
 
@@ -359,6 +370,7 @@ class Teleport(pg.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.destination = dest
+
 
 class MuzzleFlash(pg.sprite.Sprite):
     def __init__(self, game, pos, direction):
