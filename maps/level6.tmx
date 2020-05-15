@@ -35,8 +35,8 @@
 195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
 195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
 195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
-195,329,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
-195,329,0,0,0,260,262,0,0,0,0,0,0,0,0,195,
+195,6,0,0,0,0,0,0,0,0,0,0,0,0,0,195,
+195,6,0,0,0,260,262,0,0,0,0,0,0,0,0,195,
 257,3,3,3,3,3,3,3,3,3,3,3,3,3,3,258
 </data>
  </layer>
@@ -44,9 +44,7 @@
   <properties>
    <property name="duration" type="int" value="500"/>
   </properties>
-  <object id="1" name="wall" x="0" y="128" width="256" height="16"/>
-  <object id="2" name="wall" x="0" y="0" width="16" height="128"/>
-  <object id="7" name="wall" x="240" y="-40" width="16" height="168"/>
+  <object id="7" name="wall" x="240" y="-40" width="16" height="40"/>
   <object id="11" x="236" y="128" width="4"/>
   <object id="16" name="player" x="136" y="120" width="8" height="8"/>
   <object id="40" name="teleport" x="228" y="28" width="8" height="4">
@@ -55,7 +53,6 @@
    </properties>
   </object>
   <object id="52" name="spike" x="80" y="124" width="32" height="4"/>
-  <object id="58" name="wall" x="16" y="96" width="16" height="32"/>
   <object id="60" name="wall" x="208" y="32" width="32" height="16"/>
   <object id="67" name="temp_plat" x="48" y="56" width="16" height="16"/>
   <object id="68" name="temp_plat" x="96" y="40" width="16" height="16"/>

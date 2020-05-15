@@ -41,9 +41,6 @@
 </data>
  </layer>
  <objectgroup name="Obstacles">
-  <object id="1" name="wall" x="0" y="128" width="256" height="16"/>
-  <object id="2" name="wall" x="0" y="0" width="16" height="128"/>
-  <object id="7" name="wall" x="240" y="0" width="16" height="128"/>
   <object id="11" x="236" y="128" width="4"/>
   <object id="16" name="player" x="20" y="40" width="8" height="8"/>
   <object id="40" name="teleport" x="164" y="28" width="8" height="4">
@@ -52,8 +49,6 @@
    </properties>
   </object>
   <object id="52" name="spike" x="148" y="12" width="12" height="4"/>
-  <object id="58" name="wall" x="48" y="0" width="16" height="96"/>
-  <object id="59" name="wall" x="96" y="32" width="16" height="96"/>
   <object id="69" name="mob" x="116" y="24" width="8" height="8"/>
   <object id="70" name="mob" x="68" y="72" width="8" height="8"/>
   <object id="71" name="mob" x="196" y="24" width="8" height="8"/>
@@ -63,15 +58,6 @@
   <object id="75" name="mob" x="228" y="68" width="8" height="8"/>
   <object id="76" name="mob" x="212" y="120" width="8" height="8"/>
   <object id="77" name="mob" x="160" y="120" width="8" height="8"/>
-  <object id="78" name="wall" x="16" y="0" width="32" height="16"/>
-  <object id="81" name="wall" x="16" y="48" width="16" height="16"/>
-  <object id="82" name="wall" x="64" y="80" width="16" height="16"/>
-  <object id="83" name="wall" x="80" y="32" width="16" height="16"/>
-  <object id="84" name="wall" x="112" y="32" width="16" height="16"/>
-  <object id="85" name="wall" x="144" y="16" width="16" height="16"/>
-  <object id="86" name="wall" x="144" y="32" width="80" height="16"/>
-  <object id="87" name="wall" x="208" y="16" width="16" height="16"/>
-  <object id="88" name="wall" x="224" y="80" width="16" height="16"/>
   <object id="90" name="spike" x="128" y="124" width="16" height="4"/>
  </objectgroup>
 </map>

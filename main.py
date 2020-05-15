@@ -47,7 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
-        self.current_level = 'level1.tmx'
+        self.current_level = 'level6.tmx'
         game_folder = path.dirname(__file__)
         self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')
@@ -105,10 +105,17 @@ class Game:
         self.teleports = pg.sprite.Group()
 
         #creates map image and resize to tile multiplier
-        self.map = TiledMap(path.join(self.map_folder, self.current_level))
+        self.map = TiledMap(self, path.join(self.map_folder, self.current_level))
         self.map_img = self.map.make_map()
         self.map_img = resize_to_multiplier(self.map_img, TILE_SIZE_MULTIPLIER)
         self.map.rect = self.map_img.get_rect()
+
+        #creates walls based on tile properties in the wall Layers
+        self.map.create_walls()
+
+
+
+
         #creates objects based on map filename
         for tile_object in self.map.tmxdata.objects:
             obj_center = vec(tile_object.x + tile_object.width / 2,
