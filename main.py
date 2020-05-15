@@ -7,6 +7,8 @@ from settings import *
 from sprites import *
 from tilemap import *
 from enum import Enum
+from datetime import timedelta
+
 
 class Game:
     def __init__(self):
@@ -22,6 +24,13 @@ class Game:
         self.toggle_sound = True
         self.load_data()
         self.state = State.PLAY
+        self.kill_counter = 0
+        self.death_counter = 0
+
+        # monitors the length of the run, only when playing (and the death delay)
+        self.playing_time = 0
+        self.starting_time = 0
+        self.finishing_time = 0
 
     def draw_text(self, text, font_name, size, color, x, y, align="nw"):
         font = pg.font.Font(font_name, size)
@@ -98,6 +107,7 @@ class Game:
         return images_list
 
     def new(self):
+        self.starting_time = pg.time.get_ticks()
         # start a new game
         self.state = State.PLAY
         self.all_sprites = pg.sprite.LayeredUpdates()
@@ -168,6 +178,7 @@ class Game:
         gimme_player_gibs(self, self.player.rect.center)
         self.player.kill()
         self.player_death_time = pg.time.get_ticks()
+        self.death_counter += 1
 
     def update(self):
 
@@ -198,6 +209,7 @@ class Game:
                     gimme_gibs(self, hits[mob][0].pos, 2)
                     #Gib(self, hits[mob][0].pos)
                     mob.kill()
+                    self.kill_counter += 1
 
             # player hits teleports
             hits = pg.sprite.spritecollide(self.player, self.teleports, False)
@@ -259,6 +271,8 @@ class Game:
                 pg.draw.rect(self.screen, RED, mob.hit_rect, 2 )
             for bullet in self.bullets:
                 pg.draw.rect(self.screen, RED, bullet.rect, 2 )
+            self.draw_text('FPS: {:.2f}'.format(self.clock.get_fps()), self.title_font, 20,
+                           RED, WIDTH -10, 10, align="ne")
         # *after* drawing everything, flip the display
         pg.display.flip()
 
@@ -290,10 +304,20 @@ class Game:
                        WIDTH / 2, HEIGHT * 0.25 , align="center")
         self.draw_text('You finished the game', self.title_font, 25, WHITE,
                        WIDTH / 2, HEIGHT * 0.4, align="center")
+        final_time = str(timedelta(milliseconds = self.playing_time)).split('.')[0]
+        self.draw_text('Your time is:  {} '.format(final_time), self.title_font, 20, WHITE,
+                       WIDTH / 2, HEIGHT * 0.5, align="center")
+        self.draw_text("You murdered {} harmless bystander(s)".format(self.kill_counter), self.title_font, 20, WHITE,
+                       WIDTH / 2, HEIGHT * 0.6 , align="center")
+        self.draw_text("You died {} time(s)".format(self.death_counter), self.title_font, 20, WHITE,
+                       WIDTH / 2, HEIGHT * 0.7 , align="center")
         self.draw_text("Now rest", self.title_font, 20, WHITE,
-                       WIDTH / 2, HEIGHT * 3 / 4, align="center")
+                       WIDTH / 2, HEIGHT * 0.85,  align="center")
         pg.display.flip()
         self.current_level = 'level1.tmx'
+        self.kill_counter = 0
+        self.death_counter = 0
+        self.playing_time = 0
         self.wait_for_key()
 
     def show_start_screen(self):
@@ -342,6 +366,8 @@ g.show_start_screen()
 while g.running:
     g.new()
     g.run()
+    g.finishing_time = pg.time.get_ticks()
+    g.playing_time += g.finishing_time - g.starting_time
     if g.state == State.CHANGE_LEVEL:
         g.show_next_level_screen()
     elif g.state == State.GAME_OVER:
