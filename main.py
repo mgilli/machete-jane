@@ -47,7 +47,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_data(self):
-        self.current_level = 'level6.tmx'
+        self.current_level = 'level1.tmx'
         game_folder = path.dirname(__file__)
         self.img_folder =  path.join(game_folder, 'img')
         music_folder = path.join(game_folder, 'music')

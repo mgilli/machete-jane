@@ -33,7 +33,12 @@ class TiledMap:
                 for x, y, gid, in layer:
                     tile = tp(gid)
                     if tile:
-                        Obstacle(self.game, x * self.tmxdata.tilewidth* TILE_SIZE_MULTIPLIER,
-                                 y * self.tmxdata.tilewidth * TILE_SIZE_MULTIPLIER,
-                                 self.tmxdata.tilewidth* TILE_SIZE_MULTIPLIER,
-                                 self.tmxdata.tilewidth* TILE_SIZE_MULTIPLIER)
+                        try:
+                            if tile['type'] == 'wall':
+                                Obstacle(self.game, x * self.tmxdata.tilewidth* TILE_SIZE_MULTIPLIER,
+                                         y * self.tmxdata.tilewidth * TILE_SIZE_MULTIPLIER,
+                                         self.tmxdata.tilewidth* TILE_SIZE_MULTIPLIER,
+                                         self.tmxdata.tilewidth* TILE_SIZE_MULTIPLIER)
+
+                        except:
+                            pass

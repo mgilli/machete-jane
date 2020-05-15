@@ -21,6 +21,11 @@
  <tile id="256" type="wall"/>
  <tile id="257" type="wall"/>
  <tile id="258" type="wall"/>
+ <tile id="263">
+  <objectgroup draworder="index">
+   <object id="1" name="spike" x="0" y="12" width="16" height="4"/>
+  </objectgroup>
+ </tile>
  <tile id="385" type="wall"/>
  <tile id="386" type="wall"/>
  <tile id="387" type="wall"/>

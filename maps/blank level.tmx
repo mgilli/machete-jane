@@ -41,9 +41,6 @@
 </data>
  </layer>
  <objectgroup name="Obstacles">
-  <object id="1" name="wall" x="0" y="128" width="256" height="16"/>
-  <object id="2" name="wall" x="0" y="0" width="16" height="128"/>
-  <object id="7" name="wall" x="240" y="0" width="16" height="128"/>
   <object id="11" x="236" y="128" width="4"/>
   <object id="16" name="player" x="96" y="120" width="8" height="8"/>
   <object id="39" name="mob" x="40" y="120" width="8" height="8"/>
@@ -53,8 +50,5 @@
    </properties>
   </object>
   <object id="52" name="spike" x="64" y="124" width="16" height="4"/>
-  <object id="58" name="wall" x="96" y="64" width="16" height="16"/>
-  <object id="60" name="wall" x="48" y="64" width="32" height="16"/>
-  <object id="61" name="wall" x="128" y="64" width="16" height="32"/>
  </objectgroup>
 </map>
