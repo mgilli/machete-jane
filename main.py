@@ -19,6 +19,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.toggle_hitbox = False
+        self.toggle_sound = True
         self.load_data()
         self.state = State.PLAY
 
@@ -83,6 +84,9 @@ class Game:
         self.hit_snd = pg.mixer.Sound(path.join(snd_folder, HIT_SND))
         self.lose_snd = pg.mixer.Sound(path.join(snd_folder, LOSE_SND))
         self.die_snd = pg.mixer.Sound(path.join(snd_folder, DIE_SND))
+        self.sounds =[self.shoot_snd, self.jump_snd, self.hit_snd, self.lose_snd, self.die_snd]
+
+
 
     def make_anim_list(self, list, resize):
         images_list = []
@@ -222,6 +226,18 @@ class Game:
             if event.type == pg.KEYUP:
                 if event.key == pg.K_t:
                     self.toggle_hitbox = not self.toggle_hitbox
+            if event.type == pg.KEYUP:
+                if event.key == pg.K_y:
+                    self.toggle_sound = not self.toggle_sound
+                    print(self.toggle_sound)
+                    if self.toggle_sound:
+                        pg.mixer.music.unpause()
+                        for sound in self.sounds:
+                            sound.set_volume(1)
+                    else:
+                        pg.mixer.music.pause()
+                        for sound in self.sounds:
+                            sound.set_volume(0)
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_DOWN:
                     self.player_dies()

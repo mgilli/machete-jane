@@ -1,13 +1,16 @@
 # machete-jane
 A 2D platformer game made with Pygame
 
-Requires Python, as well as pygame and pytmx
+Requires Python 3.x, as well as pygame and pytmx.
+
+Use pipenv (maybe?)
 
 Arrows to Move (or WASD on a keyboard set to QWERTY)
 Space to Jump
-Left ctrl or Left alt to Shoot
+Left ctrl or Alt Gr to Shoot (Alt Gr might create problems depending on your OS)
 
 Press "t" for toggling debug (shows hitboxes)
+Press "y" for muting all sound and music
 
 
 2D Art and Music made by mgilli
